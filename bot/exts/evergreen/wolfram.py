@@ -54,7 +54,7 @@ async def send_embed(
     await ctx.send(embed=embed, file=f)
 
 
-def custom_cooldown(*ignore: int) -> Callable:
+def custom_cooldown(*ignore: list[int]) -> Callable:
     """
     Implement per-user and per-guild cooldowns for requests to the Wolfram API.
 
