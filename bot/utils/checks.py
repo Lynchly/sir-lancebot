@@ -1,6 +1,7 @@
 import datetime
 import logging
-from typing import Callable, Container, Iterable, Optional
+from collections.abc import Iterable
+from typing import Callable, Container, Optional
 
 from discord.ext.commands import (
     BucketType,

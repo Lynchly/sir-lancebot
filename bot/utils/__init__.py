@@ -2,8 +2,9 @@ import asyncio
 import contextlib
 import re
 import string
+from collections.abc import Iterable
 from datetime import datetime
-from typing import Iterable, Optional
+from typing import Optional
 
 import discord
 from discord.ext.commands import BadArgument, Context
