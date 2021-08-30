@@ -4,7 +4,7 @@ import logging
 import random
 from collections.abc import Iterable
 from pathlib import Path
-from typing import Callable, Union
+from typing import Callable, Optional, Union
 
 from discord import Embed, Message
 from discord.ext import commands
@@ -183,7 +183,7 @@ class Fun(Cog):
         await self._caesar_cipher(ctx, offset, msg, left_shift=True)
 
     @staticmethod
-    async def _get_text_and_embed(ctx: Context, text: str) -> tuple[str, Union[Embed, None]]:
+    async def _get_text_and_embed(ctx: Context, text: str) -> tuple[str, Optional[Embed]]:
         """
         Attempts to extract the text and embed from a possible link to a discord Message.
 

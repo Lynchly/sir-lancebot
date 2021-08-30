@@ -5,7 +5,7 @@ import json
 import logging
 import math
 import operator
-import typing
+from typing import Any, Optional
 
 import aiohttp
 import arrow
@@ -170,7 +170,7 @@ def _format_leaderboard(leaderboard: dict[str, dict]) -> str:
     return "\n".join(leaderboard_lines)
 
 
-async def _leaderboard_request(url: str, board: str, cookies: dict) -> dict[str, typing.Any]:
+async def _leaderboard_request(url: str, board: str, cookies: dict) -> dict[str, Any]:
     """Make a leaderboard request using the specified session cookie."""
     async with aiohttp.request("GET", url, headers=AOC_REQUEST_HEADER, cookies=cookies) as resp:
         # The Advent of Code website redirects silently with a 200 response if a
@@ -187,7 +187,7 @@ async def _leaderboard_request(url: str, board: str, cookies: dict) -> dict[str,
         return await resp.json()
 
 
-async def _fetch_leaderboard_data() -> dict[str, typing.Any]:
+async def _fetch_leaderboard_data() -> dict[str, Any]:
     """Fetch data for all leaderboards and return a pooled result."""
     year = AdventOfCode.year
 
@@ -332,7 +332,7 @@ def get_summary_embed(leaderboard: dict) -> discord.Embed:
     return aoc_embed
 
 
-async def get_public_join_code(author: discord.Member) -> typing.Optional[str]:
+async def get_public_join_code(author: discord.Member) -> Optional[str]:
     """
     Get the join code for one of the non-staff leaderboards.
 
