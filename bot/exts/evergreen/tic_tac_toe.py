@@ -1,6 +1,6 @@
 import asyncio
 import random
-import typing as t
+from typing import Callable, Optional, Union
 
 import discord
 from discord.ext.commands import Cog, Context, check, group, guild_only
@@ -42,7 +42,7 @@ class Player:
         self.ctx = ctx
         self.symbol = symbol
 
-    async def get_move(self, board: dict[int, str], msg: discord.Message) -> tuple[bool, t.Optional[int]]:
+    async def get_move(self, board: dict[int, str], msg: discord.Message) -> tuple[bool, Optional[int]]:
         """
         Get move from user.
 
@@ -104,7 +104,7 @@ class AI:
 class Game:
     """Class that contains information and functions about Tic Tac Toe game."""
 
-    def __init__(self, players: list[t.Union[Player, AI]], ctx: Context):
+    def __init__(self, players: list[Union[Player, AI]], ctx: Context):
         self.players = players
         self.ctx = ctx
         self.board = {
@@ -122,13 +122,13 @@ class Game:
         self.current = self.players[0]
         self.next = self.players[1]
 
-        self.winner: t.Optional[t.Union[Player, AI]] = None
-        self.loser: t.Optional[t.Union[Player, AI]] = None
+        self.winner: Optional[Union[Player, AI]] = None
+        self.loser: Optional[Union[Player, AI]] = None
         self.over = False
         self.canceled = False
         self.draw = False
 
-    async def get_confirmation(self) -> tuple[bool, t.Optional[str]]:
+    async def get_confirmation(self) -> tuple[bool, Optional[str]]:
         """
         Ask does user want to play TicTacToe against requester. First player is always requester.
 
@@ -227,14 +227,14 @@ class Game:
         self.over = True
 
 
-def is_channel_free() -> t.Callable:
+def is_channel_free() -> Callable:
     """Check is channel where command will be invoked free."""
     async def predicate(ctx: Context) -> bool:
         return all(game.channel != ctx.channel for game in ctx.cog.games if not game.over)
     return check(predicate)
 
 
-def is_requester_free() -> t.Callable:
+def is_requester_free() -> Callable:
     """Check is requester not already in any game."""
     async def predicate(ctx: Context) -> bool:
         return all(
@@ -253,7 +253,7 @@ class TicTacToe(Cog):
     @is_channel_free()
     @is_requester_free()
     @group(name="tictactoe", aliases=("ttt", "tic"), invoke_without_command=True)
-    async def tic_tac_toe(self, ctx: Context, opponent: t.Optional[discord.User]) -> None:
+    async def tic_tac_toe(self, ctx: Context, opponent: Optional[discord.User]) -> None:
         """Tic Tac Toe game. Play against friends or AI. Use reactions to add your mark to field."""
         if opponent == ctx.author:
             await ctx.send("You can't play against yourself.")

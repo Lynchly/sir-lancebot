@@ -1,8 +1,8 @@
 import math
 import random
-import typing as t
 from io import BytesIO
 from pathlib import Path
+from typing import Callable, Optional
 
 import discord
 from PIL import Image, ImageDraw, ImageOps
@@ -18,7 +18,7 @@ class PfpEffects:
     """
 
     @staticmethod
-    def apply_effect(image_bytes: bytes, effect: t.Callable, filename: str, *args) -> discord.File:
+    def apply_effect(image_bytes: bytes, effect: Callable, filename: str, *args) -> discord.File:
         """Applies the given effect to the image passed to it."""
         im = Image.open(BytesIO(image_bytes))
         im = im.convert("RGBA")
@@ -108,7 +108,7 @@ class PfpEffects:
         return image
 
     @staticmethod
-    def easterify_effect(image: Image.Image, overlay_image: t.Optional[Image.Image] = None) -> Image.Image:
+    def easterify_effect(image: Image.Image, overlay_image: Optional[Image.Image] = None) -> Image.Image:
         """
         Applies the easter effect to the given image.
 
