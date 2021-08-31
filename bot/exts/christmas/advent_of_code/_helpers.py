@@ -66,7 +66,7 @@ class UnexpectedResponseStatus(aiohttp.ClientError):
     """Raised when an unexpected redirect was detected."""
 
 
-class FetchingLeaderboardFailed(Exception):
+class FetchingLeaderboardFailedError(Exception):
     """Raised when one or more leaderboards could not be fetched at all."""
 
 
@@ -209,7 +209,7 @@ async def _fetch_leaderboard_data() -> dict[str, Any]:
             except UnexpectedRedirect:
                 if cookies["session"] == AdventOfCode.fallback_session:
                     log.error("It seems like the fallback cookie has expired!")
-                    raise FetchingLeaderboardFailed from None
+                    raise FetchingLeaderboardFailedError from None
 
                 # If we're here, it means that the original session did not
                 # work. Let's fall back to the fallback session.
@@ -217,7 +217,7 @@ async def _fetch_leaderboard_data() -> dict[str, Any]:
                 continue
             except aiohttp.ClientError:
                 # Don't retry, something unexpected is wrong and it may not be the session.
-                raise FetchingLeaderboardFailed from None
+                raise FetchingLeaderboardFailedError from None
             else:
                 # Get the participants and store their current count.
                 board_participants = raw_data["members"]
@@ -226,7 +226,7 @@ async def _fetch_leaderboard_data() -> dict[str, Any]:
                 break
         else:
             log.error(f"reached 'unreachable' state while fetching board `{leaderboard.id}`.")
-            raise FetchingLeaderboardFailed
+            raise FetchingLeaderboardFailedError
 
     log.info(f"Fetched leaderboard information for {len(participants)} participants")
     return participants
